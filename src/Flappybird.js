@@ -68,7 +68,6 @@ export default class Flappybird {
   }
 
   drawPipes() {
-    this.cvs.style.display = "none";
     for (let i = 0; i < 1; i++) {
       this.drawSewerPipesNorth(this.pos[i].x, this.pos[i].y);
       this.drawSewerPipesSouth(this.pos[i].x, this.pos[i].y + this.space);
