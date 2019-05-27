@@ -51,8 +51,8 @@ export default class Flappybird {
     this.ctx.drawImage(this.bg, 0, 0, this.getWidth(), this.getHeight());
   }
 
-  drawFg() {
-    this.ctx.drawImage(this.fg, 0, this.getHeight() - 70, this.getWidth(), 70);
+  drawFg(x = 0) {
+    this.ctx.drawImage(this.fg, x, this.getHeight() - 70, this.getWidth(), 70);
   }
 
   drawSewerPipesNorth(x, y) {
@@ -83,7 +83,7 @@ export default class Flappybird {
         this.angle += 10;
       }
       if (this.bY < this.pos - 20) {
-        this.angle = -15;
+        this.angle = -20;
       }
       // giữ nguyên góc
       if (this.angle > 70) {
@@ -93,6 +93,7 @@ export default class Flappybird {
         clearInterval(this.fly);
       }
       this.drawPipes();
+
       this.drawFg();
       this.drawScro();
       if (this.start == true) {
@@ -107,6 +108,7 @@ export default class Flappybird {
     for (let i = 0; i < this.pipes.length; i++) {
       this.drawSewerPipesNorth(this.pipes[i].x, this.pipes[i].y);
       this.drawSewerPipesSouth(this.pipes[i].x, this.pipes[i].y + 240 + this.gap);
+      this.drawFg(this.pipes[i].x);
       this.pipes[i].x--;
 
       this.collision(this.pipes[i].x, this.pipes[i].y);
@@ -124,7 +126,7 @@ export default class Flappybird {
       location.reload();
     }
     clearInterval(this.fly);
-    this.angle = -15;
+    this.angle = -20;
     this.pos = this.bY;
     this.fly = setInterval(() => {
       this.bY -= 2.5;
