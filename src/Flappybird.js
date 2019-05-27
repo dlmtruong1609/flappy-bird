@@ -89,6 +89,7 @@ export default class Flappybird {
       if (this.angle > 70) {
         this.angle = 70;
       }
+
       if (this.bY < this.pos - this.jump) {
         clearInterval(this.fly);
       }
