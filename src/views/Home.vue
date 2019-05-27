@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <canvas ref="canvas" id="canvas" width="600" height="700"></canvas>
+    <canvas ref="canvas" id="canvas" width="300" height="512"></canvas>
   </div>
 </template>
 
@@ -11,12 +11,13 @@ global.$ = jQuery;
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import Flappybird from "../Flappybird";
-import MySprite from '../draw';
+import MySprite from '../drawBird';
 export default {
   name: "home",
   data() {
     return {
       flappy: null,
+      scores: 0,
     }
   },
   methods: {
@@ -33,15 +34,12 @@ export default {
   mounted() {
     this.initFlappy();
     document.addEventListener('keydown', (e) => {
-      this.flappy.bird_Fly()
-
+        this.flappy.bird_Fly()
       e.preventDefault()
     })
   }
 };
 </script>
 <style>
-.container {
-  background: black;
-}
+
 </style>

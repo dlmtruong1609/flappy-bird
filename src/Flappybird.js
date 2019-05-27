@@ -1,4 +1,4 @@
-import MySprite from "./draw";
+import MySprite from "./drawBird";
 
 export default class Flappybird {
   constructor(context, canvas) {
@@ -10,26 +10,29 @@ export default class Flappybird {
     this.fg = new Image();
     this.sewerPipesNorth = new Image();
     this.sewerPipesSouth = new Image();
-
+    // vẽ các đối tượng
     this.bird.src = require("./assets/images/bird.png")
     this.bg.src = require("./assets/images/bg.png");
     this.fg.src = require("./assets/images/fg.png");
     this.sewerPipesNorth.src = require("./assets/images/sewerpipesNorth.png");
     this.sewerPipesSouth.src = require("./assets/images/sewerpipesSouth.png");
 
-    this.gap = 350;
-    this.bX = 0;
-    this.bY = 0;
-    this.gravity = 1;
-    this.jump = 60;
-    this.i = 1;
+    this.gap = 100; // khoảng cách giữa cột trên và dưới
+    this.bX = 0; // vt
+    this.bY = 0; // vt
+    this.jump = 60; // lực nhảy
+    this.fall = 0;
+    this.start = true;
+    //mảng các cột
     this.pipes = [
       {
         x: canvas.width,
         y: 0
       }
     ];
-    this.angle = 0;
+    this.angle = 0; // góc
+
+    this.scores = 0;
   }
   getHeight() {
     return this.cvs.height;
@@ -40,7 +43,7 @@ export default class Flappybird {
   }
 
   drawBird() {
-    this.run = new MySprite("http://s2js.com/img/etc/flappybird.png", this.ctx, this.cvs);
+    this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
     this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
   }
 
@@ -49,7 +52,7 @@ export default class Flappybird {
   }
 
   drawFg() {
-    this.ctx.drawImage(this.fg, 0, this.getHeight() - 60, this.getWidth(), 70);
+    this.ctx.drawImage(this.fg, 0, this.getHeight() - 70, this.getWidth(), 70);
   }
 
   drawSewerPipesNorth(x, y) {
@@ -60,31 +63,41 @@ export default class Flappybird {
     this.ctx.drawImage(this.sewerPipesSouth, x, y);
   }
 
+  drawScro() {
+    this.ctx.fillStyle = "#fff";
+    this.ctx.font = "40px Times New Romans";
+    this.ctx.fillText(`${this.scores}`, this.getWidth() / 2, 60);
+  }
+  drawButton() {
+    this.ctx.fillStyle = "#fff";
+    this.ctx.font = "40px Times New Romans";
+    this.ctx.fillText("Tiếp tục", this.getWidth() / 3, this.getHeight() / 2);
+  }
   draw() {
     let run = () => {
       this.drawBg();
       this.drawBird();
-      this.angle += 2;
-      if (this.angle > 0) {
-        this.angle += 2;
-        this.bY += 4;
+      this.bY += this.fall; // rơi
+      // bắt đầu xoay
+      if (this.bY > this.pos) {
+        this.angle += 6;
       }
-      if (this.bY < this.pos + 100) {
-        this.angle = -30;
-        this.bY += 6;
+      if (this.bY < this.pos) {
+        this.angle = -15;
       }
-
+      // giữ nguyên góc
       if (this.angle > 70) {
         this.angle = 70;
       }
-
-      console.log(this.bY);
+      if (this.bY < this.pos - this.jump) {
+        clearInterval(this.fly);
+      }
       this.drawPipes();
-
       this.drawFg();
-      setTimeout(() => {
+      this.drawScro();
+      if (this.start == true) {
         requestAnimationFrame(run);
-      }, 1000 / 60);
+      } // tạo aminate
     };
 
     run();
@@ -93,21 +106,49 @@ export default class Flappybird {
   drawPipes() {
     for (let i = 0; i < this.pipes.length; i++) {
       this.drawSewerPipesNorth(this.pipes[i].x, this.pipes[i].y);
-      this.drawSewerPipesSouth(this.pipes[i].x, this.pipes[i].y + this.gap);
+      this.drawSewerPipesSouth(this.pipes[i].x, this.pipes[i].y + 240 + this.gap);
 
       this.pipes[i].x--;
 
-      if (this.pipes[i].x == 100) {
+      this.collision(this.pipes[i].x, this.pipes[i].y);
+      // đánh dấu xuất hiện cột mới
+      if (this.pipes[i].x == 80) {
         this.pipes.push({
           x: this.cvs.width,
-          y: Math.floor(Math.random() * this.sewerPipesNorth.height) - this.sewerPipesNorth.height
+          y: Math.random() * -200
         });
       }
     }
   }
   bird_Fly() {
-    this.angle = -30;
-    this.bY -= 100;
+    if (this.start === false) {
+      location.reload();
+    }
+    this.fall = 4;
+    clearInterval(this.fly);
+    this.angle = -15;
     this.pos = this.bY;
+    this.fly = setInterval(() => {
+      this.bY -= 2.5;
+    }, 6);
+  }
+  collision(x, y) {
+    this.hookLeft = this.getWidth() / 2 + 34;
+    this.hookRight = this.getWidth() / 2 - 40;
+
+    if (x == this.hookLeft) {
+      this.scores++;
+    }
+    if (x <= this.hookLeft && x >= this.hookRight) {
+      if (this.bY < y - 5 || this.bY >= y + this.gap - 28) {
+        this.drawButton();
+        this.start = false;
+      }
+    }
+    if (this.bY >= 170) {
+      this.drawButton();
+      this.fall = 0;
+      this.start = false;
+    }
   }
 }
