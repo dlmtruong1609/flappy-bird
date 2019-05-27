@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <canvas ref="canvas" id="canvas" width="400" height="505"></canvas>
+    <canvas ref="canvas" id="canvas" width="600" height="700"></canvas>
   </div>
 </template>
 
@@ -11,21 +11,32 @@ global.$ = jQuery;
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import Flappybird from "../Flappybird";
+import MySprite from '../draw';
 export default {
   name: "home",
+  data() {
+    return {
+      flappy: null,
+    }
+  },
   methods: {
     initFlappy() {
       let cvs = document.getElementById("canvas");
       let ctx = cvs.getContext("2d");
 
-      let flappy = new Flappybird(ctx, cvs);
+      this.flappy = new Flappybird(ctx, cvs);
       window.onload = () => {
-        flappy.draw();
+        this.flappy.draw();
       };
     }
   },
   mounted() {
     this.initFlappy();
+    document.addEventListener('keydown', (e) => {
+      this.flappy.bird_Fly()
+
+      e.preventDefault()
+    })
   }
 };
 </script>
