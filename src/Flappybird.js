@@ -95,7 +95,6 @@ export default class Flappybird {
       }
       this.drawPipes();
 
-      this.drawFg();
       this.drawScro();
       if (this.start == true) {
         requestAnimationFrame(run);
@@ -106,6 +105,7 @@ export default class Flappybird {
   }
 
   drawPipes() {
+    this.drawFg(0);
     for (let i = 0; i < this.pipes.length; i++) {
       this.drawSewerPipesNorth(this.pipes[i].x, this.pipes[i].y);
       this.drawSewerPipesSouth(this.pipes[i].x, this.pipes[i].y + 240 + this.gap);
