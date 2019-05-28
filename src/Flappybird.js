@@ -17,13 +17,15 @@ export default class Flappybird {
     this.sewerPipesNorth.src = require("./assets/images/sewerpipesNorth.png");
     this.sewerPipesSouth.src = require("./assets/images/sewerpipesSouth.png");
 
-    this.gap = 105; // khoảng cách giữa cột trên và dưới
+    // cài đặt thông số ở đây
+    this.gap = 110; // khoảng cách giữa cột trên và dưới
     this.bX = 0; // vt
     this.bY = 0; // vt
-    this.jump = 60; // lực nhảy
-    this.fall = 3; // tốc độ rơi
+    this.jump = 55; // lực nhảy
+    this.fall = 3.5; // tốc độ rơi
     this.space = 200; // khoảng cách xuất hiện cột
     this.start = true;
+    this.speedJump = 6;
     //mảng các cột
     this.pipes = [
       {
@@ -32,6 +34,7 @@ export default class Flappybird {
       }
     ];
     this.angle = 0; // góc
+    this.speedAngle = 1;
     this.x = 0;
     this.scores = 0;
   }
@@ -80,11 +83,11 @@ export default class Flappybird {
       this.drawBird();
       this.bY += this.fall; // rơi
       // bắt đầu xoay
-      if (this.bY > this.pos - 10) {
-        this.angle += 10;
-      }
-      if (this.bY < this.pos) {
-        this.angle = -20;
+      this.angle += this.speedAngle;
+      if (this.angle >= 0) {
+        this.speedAngle = 6;
+      } else {
+        this.speedAngle = 1;
       }
       // giữ nguyên góc
       if (this.angle > 70) {
@@ -127,15 +130,15 @@ export default class Flappybird {
       location.reload();
     }
     clearInterval(this.fly);
-    this.angle = -20;
+    this.angle = -30;
     this.pos = this.bY;
     this.fly = setInterval(() => {
-      this.bY -= 3;
-    }, 6);
+      this.bY -= 2.5;
+    }, this.speedJump);
   }
   collision(x, y) {
     this.hookLeft = this.getWidth() / 2 + this.bird.height / 2;
-    this.hookRight = this.getWidth() / 2 - this.bird.height;
+    this.hookRight = this.hookLeft - this.sewerPipesNorth.width - this.bird.width;
 
     if (x == this.hookLeft) {
       this.scores++;

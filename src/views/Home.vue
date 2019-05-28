@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <canvas  ref="canvas" id="canvas" width="500" height="600"></canvas>
+    <canvas  ref="canvas" id="canvas" width="800" height="600"></canvas>
   </div>
 </template>
 
@@ -36,7 +36,15 @@ export default {
     document.addEventListener('keydown', (e) => {
         this.flappy.bird_Fly()
       e.preventDefault()
-    })
+    });
+    document.addEventListener('click', (e) => {
+        this.flappy.bird_Fly()
+      e.preventDefault()
+    });
+    document.addEventListener('touchstart', (e) => {
+        this.flappy.bird_Fly()
+      e.preventDefault()
+    });
   }
 };
 </script>
