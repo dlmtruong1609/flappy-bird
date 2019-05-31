@@ -37,6 +37,7 @@ export default class Flappybird {
     this.speedAngle = 1;
     this.x = 0;
     this.scores = 0;
+    this.flag = false;
   }
   getHeight() {
     return this.cvs.height;
@@ -95,21 +96,16 @@ export default class Flappybird {
       }
 
       if (this.bY < this.pos - this.jump) {
-        this.bY = this.pos - this.jump; // giữ nó ở vị trí này
-        setTimeout(() => {
-          clearInterval(this.fly);
-        }, 100); // trong 0.1s
+        clearInterval(this.fly);
       }
       this.drawPipes();
       this.drawScro();
-      if (this.start == true) {
-        requestAnimationFrame(run);
-      } // tạo aminate  
     };
 
-    run();
+    setInterval(() => {
+      run();
+    }, 15);
   }
-
   drawPipes() {
     this.drawFg(0);
     for (let i = 0; i < this.pipes.length; i++) {

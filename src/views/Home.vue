@@ -5,11 +5,6 @@
 </template>
 
 <script>
-import jQuery from "jquery";
-global.jQuery = jQuery;
-global.$ = jQuery;
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap.js";
 import Flappybird from "../Flappybird";
 import MySprite from '../drawBird';
 export default {
