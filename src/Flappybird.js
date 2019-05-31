@@ -104,7 +104,7 @@ export default class Flappybird {
       this.drawScro();
       if (this.start == true) {
         requestAnimationFrame(run);
-      } // tạo aminate
+      } // tạo aminate  
     };
 
     run();
