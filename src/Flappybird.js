@@ -138,7 +138,7 @@ export default class Flappybird {
   }
   collision(x, y) {
     this.hookLeft = this.getWidth() / 2 + this.bird.height / 2;
-    this.hookRight = this.hookLeft - this.sewerPipesNorth.width - this.bird.width;
+    this.hookRight = this.hookLeft - this.sewerPipesNorth.width - this.bird.width / 2;
 
     if (x == this.hookLeft) {
       this.scores++;
