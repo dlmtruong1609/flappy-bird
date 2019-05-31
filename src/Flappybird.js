@@ -95,7 +95,10 @@ export default class Flappybird {
       }
 
       if (this.bY < this.pos - this.jump) {
-        clearInterval(this.fly);
+        this.bY = this.pos - this.jump; // giữ nó ở vị trí này
+        setTimeout(() => {
+          clearInterval(this.fly);
+        }, 100); // trong 0.1s
       }
       this.drawPipes();
       this.drawScro();
