@@ -1,5 +1,3 @@
-import MySprite from "./drawBird";
-
 export default class Flappybird {
   constructor(context, canvas) {
     this.ctx = context;
@@ -11,7 +9,7 @@ export default class Flappybird {
     this.sewerPipesNorth = new Image();
     this.sewerPipesSouth = new Image();
     // vẽ các đối tượng
-    this.bird.src = require("./assets/images/bird.png")
+    this.bird.src = require("./assets/images/bird.png");
     this.bg.src = require("./assets/images/bg.png");
     this.fg.src = require("./assets/images/fg.png");
     this.sewerPipesNorth.src = require("./assets/images/sewerpipesNorth.png");
@@ -47,9 +45,16 @@ export default class Flappybird {
     return this.cvs.width;
   }
 
-  drawBird() {
-    this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
-    this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
+  drawBird(x, y) {
+    // this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
+    // this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
+    this.ctxb = this.ctx;
+    this.cvsb = this.cvs;
+    this.ctxb.save();
+    this.ctxb.translate(x + this.cvs.width / 2, y + this.cvs.height / 2);
+    this.ctxb.rotate(this.angle * Math.PI / 180);
+    this.ctxb.drawImage(this.bird, -this.bird.width / 2, -this.bird.height / 2);
+    this.ctxb.restore();
   }
 
   drawBg() {
@@ -81,7 +86,7 @@ export default class Flappybird {
   draw() {
     let run = () => {
       this.drawBg();
-      this.drawBird();
+      this.drawBird(this.bX, this.bY);
       this.bY += this.fall; // rơi
       // bắt đầu xoay
       this.angle += this.speedAngle;
@@ -102,7 +107,7 @@ export default class Flappybird {
       this.drawScro();
     };
 
-    setInterval(() => {
+    this.animate = setInterval(() => {
       run();
     }, 15);
   }
@@ -147,12 +152,14 @@ export default class Flappybird {
       || this.bY + this.getHeight() / 2 >= y + this.sewerPipesNorth.height - this.bird.height / 2 + this.gap) {
         this.drawButton();
         this.start = false;
+        clearInterval(this.animate);
       }
     }
     if (this.bY >= this.getHeight() / 2 - this.fg.height - 10) {
       this.drawButton();
       this.fall = 0;
       this.start = false;
+      clearInterval(this.animate);
     }
   }
 }
