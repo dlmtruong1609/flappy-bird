@@ -6,7 +6,6 @@
 
 <script>
 import Flappybird from "../Flappybird";
-import MySprite from '../drawBird';
 export default {
   name: "home",
   data() {
