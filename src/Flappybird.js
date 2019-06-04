@@ -39,9 +39,9 @@ export default class Flappybird {
     this.scores = 0;
     this.flag = false;
 
-
-    this.startTime = 0;
-    this.frameNumber = 0;
+    this.before;this.now;this.fps;
+    this.before=Date.now();
+    this.fpss=0;
   }
   getHeight() {
     return this.cvs.height;
@@ -89,7 +89,10 @@ export default class Flappybird {
   }
   draw() {
     let run = () => {
-      this.defaultTimeout = 1000 / this.fps;
+      this.startTime = Date.now();
+      if (this.start != false) {
+        this.request(run);
+      }
       this.drawBg();
       this.drawBird(this.bX, this.bY);
       this.bY += this.fall; // rơi
@@ -109,29 +112,19 @@ export default class Flappybird {
       }
       this.drawPipes();
       this.drawScro();
-      this.request(run);
     };
     run();
-    // this.animate = setInterval(() => {
-    //   this.fps = this.loop();
-    //   run();
-    // }, this.defaultTimeout);
   }
-  request( callback ){
-    window.setTimeout(callback, 1000 / this.fps);
+  request(callback) {
+    window.setTimeout(callback, 1000 / 60);
+    this.loop();
   }
-  loop() {
-    let result = 0;
-    this.frameNumber++;
-    var d = new Date().getTime();
-    let currentTime = (d - this.startTime) / 1000;
-    result = Math.floor((this.frameNumber / currentTime));
-    if (currentTime > 1) {
-      this.startTime = new Date().getTime();
-      this.frameNumber = 0;
-    }
-    return result;
-  }
+  loop(){
+    this.now=Date.now();
+    this.fpss=Math.round(1000/(this.now-this.before));
+    this.before=this.now;
+    console.log("fps",this.fps)
+}
   drawPipes() {
     this.drawFg(0);
     for (let i = 0; i < this.pipes.length; i++) {
@@ -173,14 +166,12 @@ export default class Flappybird {
       || this.bY + this.getHeight() / 2 >= y + this.sewerPipesNorth.height - this.bird.height / 2 + this.gap) {
         this.drawButton();
         this.start = false;
-        clearInterval(this.animate);
       }
     }
     if (this.bY >= this.getHeight() / 2 - this.fg.height - 10) {
       this.drawButton();
       this.fall = 0;
       this.start = false;
-      clearInterval(this.animate);
     }
   }
 }
