@@ -88,10 +88,20 @@ export default class Flappybird {
     this.ctx.fillText("Tiếp tục", this.getWidth() / 3, this.getHeight() / 2);
   }
   draw() {
+    window.requestAnimationFrame = window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    function request(callback) {
+      request.timestamp = request.timestamp || 0;
+      var timestamp = new Date().getTime();
+      var delay = Math.max(0, 16 - (timestamp - request.timestamp));
+      request.timestamp = timestamp += delay;
+      return setTimeout.call(this, function() { callback(timestamp); }, delay);
+    };
     let run = () => {
       this.startTime = Date.now();
       if (this.start != false) {
-        requestAnimationFrame(run)
+        requestAnimationFrame(run);
       }
       this.drawBg();
       this.drawBird(this.bX, this.bY);
