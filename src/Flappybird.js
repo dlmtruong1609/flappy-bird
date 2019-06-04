@@ -118,9 +118,9 @@ export default class Flappybird {
   request(callback) {
     this.now = Date.now();
     this.fps = Math.round(1000 / (this.now - this.before));
-    window.setTimeout(callback, this.fps);
+    window.setTimeout(callback, this.fps / 2);
     this.before = this.now;
-    console.log("fps", this.fps);
+    console.log("fps", this.fps / 2);
   }
   loop() {
     this.now = Date.now();
@@ -134,7 +134,7 @@ export default class Flappybird {
       this.drawSewerPipesNorth(this.pipes[i].x, this.pipes[i].y);
       this.drawSewerPipesSouth(this.pipes[i].x, this.pipes[i].y + this.sewerPipesNorth.height + this.gap);
       this.drawFg(this.pipes[i].x);
-      this.pipes[i].x--;
+      this.pipes[i].x -= 2;
       this.collision(this.pipes[i].x, this.pipes[i].y);
       // đánh dấu xuất hiện cột mới
 
