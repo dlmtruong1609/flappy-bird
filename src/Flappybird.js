@@ -116,7 +116,7 @@ export default class Flappybird {
       console.log(this.defaultTimeout);
       run();
     }, this.defaultTimeout);
-  }
+  } 
   loop() {
     let result = 0;
     this.frameNumber++;
