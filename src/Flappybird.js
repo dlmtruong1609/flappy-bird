@@ -107,7 +107,7 @@ export default class Flappybird {
 
     this.animate = setInterval(() => {
       run();
-    }, 15);
+    }, 1000/40);
   }
   drawPipes() {
     this.drawFg(0);
