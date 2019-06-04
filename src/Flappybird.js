@@ -123,7 +123,7 @@ export default class Flappybird {
     this.now=Date.now();
     this.fpss=Math.round(1000/(this.now-this.before));
     this.before=this.now;
-    console.log("fps",this.fps)
+    console.log("fps",this.fpss)
 }
   drawPipes() {
     this.drawFg(0);
