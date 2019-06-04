@@ -23,7 +23,7 @@ export default class Flappybird {
     this.bY = 0; // vt
     this.jump = 55; // lực nhảy
     this.speedJump = 6;
-    this.fall = 3.5; // tốc độ rơi
+    this.fall = 3.5 // tốc độ rơi
     this.space = 200; // khoảng cách xuất hiện cột
     this.start = true;
     //mảng các cột
@@ -39,9 +39,9 @@ export default class Flappybird {
     this.scores = 0;
     this.flag = false;
 
-    this.before;this.now;this.fps;
-    this.before=Date.now();
-    this.fpss=0;
+    this.before;
+    this.now;
+    this.before = Date.now();
   }
   getHeight() {
     return this.cvs.height;
@@ -116,14 +116,17 @@ export default class Flappybird {
     run();
   }
   request(callback) {
-    window.setTimeout(callback, 1000 / 60);
-    this.loop();
+    this.now = Date.now();
+    this.fps = Math.round(1000 / (this.now - this.before));
+    window.setTimeout(callback, this.fps);
+    this.before = this.now;
+    console.log("fps", this.fps);
   }
-  loop(){
-    this.now=Date.now();
-    this.fpss=Math.round(1000/(this.now-this.before));
-    this.before=this.now;
-    console.log("fps",this.fpss)
+  loop() {
+    this.now = Date.now();
+    this.fps = Math.round(1000 / (this.now - this.before));
+    this.before = this.now;
+    console.log("fps", this.fps);
 }
   drawPipes() {
     this.drawFg(0);
