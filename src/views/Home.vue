@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <canvas  ref="canvas" id="canvas" width="800" height="600"></canvas>
+    <canvas id="canvas" width="800" height="600"></canvas>
   </div>
 </template>
 
@@ -28,7 +28,9 @@ export default {
   mounted() {
     this.initFlappy();
     document.addEventListener('keydown', (e) => {
-        this.flappy.bird_Fly()
+        if(e.keyCode === 13) {
+          this.flappy.bird_Fly()
+        }
       e.preventDefault()
     });
     document.addEventListener('click', (e) => {

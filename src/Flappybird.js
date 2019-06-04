@@ -46,8 +46,6 @@ export default class Flappybird {
   }
 
   drawBird(x, y) {
-    // this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
-    // this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
     this.ctxb = this.ctx;
     this.cvsb = this.cvs;
     this.ctxb.save();
