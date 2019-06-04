@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <canvas id="canvas" width="800" height="600"></canvas>
-    <div>{{fps}}</div>
   </div>
 </template>
 
@@ -25,18 +24,6 @@ export default {
       window.onload = () => {
         this.flappy.draw();
       };
-      var before,now,fps;
-      before=Date.now();
-      fps=0;
-      requestAnimationFrame(
-          function loop(){
-              now=Date.now();
-              fps=Math.round(1000/(now-before));
-              before=now;
-              requestAnimationFrame(loop);
-              console.log("fps",fps)
-          }
-      );
     }
   },
   mounted() {

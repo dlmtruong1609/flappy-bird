@@ -16,14 +16,16 @@ export default class Flappybird {
     this.sewerPipesSouth.src = require("./assets/images/sewerpipesSouth.png");
 
     // cài đặt thông số ở đây
+    this.fps = 60;
+    this.timeout = 50;
     this.gap = 110; // khoảng cách giữa cột trên và dưới
     this.bX = 0; // vt
     this.bY = 0; // vt
     this.jump = 55; // lực nhảy
+    this.speedJump = 6;
     this.fall = 3.5; // tốc độ rơi
     this.space = 200; // khoảng cách xuất hiện cột
     this.start = true;
-    this.speedJump = 6;
     //mảng các cột
     this.pipes = [
       {
@@ -82,6 +84,7 @@ export default class Flappybird {
     this.ctx.fillText("Tiếp tục", this.getWidth() / 3, this.getHeight() / 2);
   }
   draw() {
+    var startTime = Date.now();
     let run = () => {
       this.drawBg();
       this.drawBird(this.bX, this.bY);
@@ -104,10 +107,11 @@ export default class Flappybird {
       this.drawPipes();
       this.drawScro();
     };
-
+    var renderTimeout = Date.now() - startTime;
+    var timeout = Math.max(this.timeout - renderTimeout, 0);
     this.animate = setInterval(() => {
-      run();
-    }, 1000/40);
+      setTimeout(run(), timeout);
+    }, 1000 / this.fps);
   }
   drawPipes() {
     this.drawFg(0);
