@@ -18,6 +18,7 @@ export default class Flappybird {
     // cài đặt thông số ở đây
     this.fps = 60;
     this.timeout = 50;
+    this.defaultTimeout = 1000 / this.fps;
     this.gap = 110; // khoảng cách giữa cột trên và dưới
     this.bX = 0; // vt
     this.bY = 0; // vt
@@ -84,7 +85,7 @@ export default class Flappybird {
     this.ctx.fillText("Tiếp tục", this.getWidth() / 3, this.getHeight() / 2);
   }
   draw() {
-    var startTime = Date.now();
+    this.startTime = Date.now();
     let run = () => {
       this.drawBg();
       this.drawBird(this.bX, this.bY);
@@ -107,11 +108,17 @@ export default class Flappybird {
       this.drawPipes();
       this.drawScro();
     };
-    var renderTimeout = Date.now() - startTime;
-    var timeout = Math.max(this.timeout - renderTimeout, 0);
+    var renderTimeout = Date.now() - this.startTime;
+    console.log(renderTimeout);
+    
+    var timeout = Math.max(this.defaultTimeout - renderTimeout, 0);
+    console.log(timeout);
+    
     this.animate = setInterval(() => {
-      setTimeout(run(), timeout);
-    }, 1000 / this.fps);
+      setTimeout(() => {
+        run();
+      }, 1);
+    }, timeout);
   }
   drawPipes() {
     this.drawFg(0);
