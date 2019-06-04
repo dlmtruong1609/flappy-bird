@@ -1,3 +1,5 @@
+import MySprite from "./drawObj";
+
 export default class Flappybird {
   constructor(context, canvas) {
     this.ctx = context;
@@ -45,14 +47,17 @@ export default class Flappybird {
     return this.cvs.width;
   }
 
-  drawBird(x, y) {
-    this.ctxb = this.ctx;
-    this.cvsb = this.cvs;
-    this.ctxb.save();
-    this.ctxb.translate(x + this.cvs.width / 2, y + this.cvs.height / 2);
-    this.ctxb.rotate((this.angle * Math.PI) / 180);
-    this.ctxb.drawImage(this.bird, -this.bird.width / 2, -this.bird.height / 2);
-    this.ctxb.restore();
+  drawBird() {
+    this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
+    this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
+
+    // this.ctxb = this.ctx;
+    // this.cvsb = this.cvs;
+    // this.ctxb.save();
+    // this.ctxb.translate(x + this.cvs.width / 2, y + this.cvs.height / 2);
+    // this.ctxb.rotate((this.angle * Math.PI) / 180);
+    // this.ctxb.drawImage(this.bird, -this.bird.width / 2, -this.bird.height / 2);
+    // this.ctxb.restore();
   }
 
   drawBg() {
