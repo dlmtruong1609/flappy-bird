@@ -109,14 +109,17 @@ export default class Flappybird {
       }
       this.drawPipes();
       this.drawScro();
+      this.request(run);
     };
-    this.animate = setInterval(() => {
-      this.fps = this.loop();
-      console.log(this.fps);
-      console.log(this.defaultTimeout);
-      run();
-    }, this.defaultTimeout);
-  } 
+    run();
+    // this.animate = setInterval(() => {
+    //   this.fps = this.loop();
+    //   run();
+    // }, this.defaultTimeout);
+  }
+  request( callback ){
+    window.setTimeout(callback, 1000 / this.fps);
+  }
   loop() {
     let result = 0;
     this.frameNumber++;
