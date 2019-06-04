@@ -6,13 +6,13 @@
 
 <script>
 import Flappybird from "../Flappybird";
+import { setInterval } from 'timers';
 export default {
   name: "home",
   data() {
     return {
       flappy: null,
-      scores: 0,
-      fps: 0
+      scores: 0
     }
   },
   methods: {
@@ -24,18 +24,6 @@ export default {
       window.onload = () => {
         this.flappy.draw();
       };
-      var before,now,fps;
-      before=Date.now();
-      fps=0;
-      requestAnimationFrame(
-          function loop(){
-              now=Date.now();
-              fps=Math.round(1000/(now-before));
-              before=now;
-              requestAnimationFrame(loop);
-              console.log("fps",fps)
-          }
-      );
     }
   },
   mounted() {

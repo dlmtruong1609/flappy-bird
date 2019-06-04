@@ -39,6 +39,10 @@ export default class Flappybird {
     this.x = 0;
     this.scores = 0;
     this.flag = false;
+
+
+    this.startTime = 0;
+    this.frameNumber = 0;
   }
   getHeight() {
     return this.cvs.height;
@@ -101,7 +105,6 @@ export default class Flappybird {
       if (this.angle > 70) {
         this.angle = 70;
       }
-
       if (this.bY < this.pos - this.jump) {
         clearInterval(this.fly);
       }
@@ -109,16 +112,27 @@ export default class Flappybird {
       this.drawScro();
     };
     var renderTimeout = Date.now() - this.startTime;
-    console.log(renderTimeout);
-    
     var timeout = Math.max(this.defaultTimeout - renderTimeout, 0);
-    console.log(timeout);
-    
     this.animate = setInterval(() => {
-      setTimeout(() => {
-        run();
-      }, 1);
+      run();
     }, timeout);
+    setInterval(() => {
+      console.log(this.loop());
+    }, 1000/60)
+    
+  }
+  loop() {
+    let result = 0;
+    this.frameNumber++;
+        var d = new Date().getTime(),
+        currentTime = ( d -  this.startTime ) / 1000;
+        result = Math.floor( (  this.frameNumber / currentTime ) );
+        if( currentTime > 1 ){
+          this.startTime = new Date().getTime();
+          this.frameNumber = 0;
+            }
+            return result;
+
   }
   drawPipes() {
     this.drawFg(0);
