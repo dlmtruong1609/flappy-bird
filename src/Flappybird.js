@@ -91,7 +91,7 @@ export default class Flappybird {
     let run = () => {
       this.startTime = Date.now();
       if (this.start != false) {
-        this.request(run);
+        requestAnimationFrame(run)
       }
       this.drawBg();
       this.drawBird(this.bX, this.bY);
