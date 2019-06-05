@@ -18,14 +18,17 @@ export default class Flappybird {
     this.sewerPipesSouth.src = require("./assets/images/sewerpipesSouth.png");
 
     // cài đặt thông số ở đây
+    this.fps = 60;
     this.gap = 110; // khoảng cách giữa cột trên và dưới
     this.bX = 0; // vt
     this.bY = 0; // vt
     this.jump = 55; // lực nhảy
     this.speedJump = 6;
-    this.fall = 3.5 // tốc độ rơi
+    this.speedPipes = 2;
+    this.fall = 3.5; // tốc độ rơi
     this.space = 200; // khoảng cách xuất hiện cột
     this.start = true;
+    this.check = false;
     //mảng các cột
     this.pipes = [
       {
@@ -98,10 +101,6 @@ export default class Flappybird {
       return setTimeout.call(this, function() { callback(timestamp); }, delay);
     };
     let run = () => {
-      this.startTime = Date.now();
-      if (this.start != false) {
-        requestAnimationFrame(run);
-      }
       this.drawBg();
       this.drawBird(this.bX, this.bY);
       this.bY += this.fall; // rơi
@@ -121,8 +120,14 @@ export default class Flappybird {
       }
       this.drawPipes();
       this.drawScro();
+      if(this.start != false) {
+        this.request(run);
+      }
     };
     run();
+  }
+  request(callback) {
+    setTimeout(callback, 1000 / 15);
   }
   drawPipes() {
     this.drawFg(0);
@@ -130,15 +135,30 @@ export default class Flappybird {
       this.drawSewerPipesNorth(this.pipes[i].x, this.pipes[i].y);
       this.drawSewerPipesSouth(this.pipes[i].x, this.pipes[i].y + this.sewerPipesNorth.height + this.gap);
       this.drawFg(this.pipes[i].x);
-      this.pipes[i].x -= 4;
+      this.pipes[i].x -= this.speedPipes;
       this.collision(this.pipes[i].x, this.pipes[i].y);
       // đánh dấu xuất hiện cột mới
-
-      if (this.pipes[i].x == Math.floor(this.getWidth() - this.space)) {
+      if (this.pipes[i].x <= Math.floor(this.getWidth() - this.space + this.speedPipes / 2) &&
+        this.pipes[i].x >= Math.floor(this.getWidth() - this.space - this.speedPipes / 2)) {
         this.pipes.push({
           x: this.cvs.width,
           y: Math.random() * -200
         });
+      }
+      if (this.check == false) {
+        this.check = true;
+        setTimeout(() => {
+          if (this.pipes[i].x > this.getWidth() - 60) {
+            this.speedPipes = 8;
+            this.fall = 14;
+          } else if (this.pipes[i].x > this.getWidth() - 100) {
+            this.speedPipes = 4;
+            this.fall = 7;
+          } else if (this.pipes[i].x > this.getWidth() - 150) {
+            this.speedPipes = 2;
+            this.speedAngle = 6;
+          }
+        }, 1000);
       }
     }
   }
