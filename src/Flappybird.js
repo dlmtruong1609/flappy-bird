@@ -16,6 +16,7 @@ export default class Flappybird {
     this.sewerPipesNorth.src = require("./assets/images/sewerpipesNorth.png");
     this.sewerPipesSouth.src = require("./assets/images/sewerpipesSouth.png");
 
+
     // cài đặt thông số ở đây
     this.gap = 110; // khoảng cách giữa cột trên và dưới
     this.bX = 0; // vt
