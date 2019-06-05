@@ -127,7 +127,7 @@ export default class Flappybird {
     run();
   }
   request(callback) {
-    setTimeout(callback, 1000 / 15);
+    setTimeout(callback, 1000 / 60);
   }
   drawPipes() {
     this.drawFg(0);
@@ -149,7 +149,7 @@ export default class Flappybird {
         this.check = true;
         setTimeout(() => {
           if (this.pipes[i].x > this.getWidth() - 60) {
-            this.speedPipes = 8;
+            this.speedPipes = 6;
             this.fall = 14;
           } else if (this.pipes[i].x > this.getWidth() - 100) {
             this.speedPipes = 4;
