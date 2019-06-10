@@ -95,9 +95,9 @@ export default class Flappybird {
       this.drawBird(this.bX, this.bY);
       this.bY += this.fall; // rơi
       // bắt đầu xoay
-      // for (let index = 0; index < 100; index++) {
-      //   console.log("OK");
-      // }
+      for (let index = 0; index < 100; index++) {
+        console.log("OK");
+      }
       this.angle += this.speedAngle;
       if (this.angle >= 0) {
         this.speedAngle = 6;
@@ -140,11 +140,15 @@ export default class Flappybird {
       }
       if (this.check == false) {
         this.check = true;
+        this.timeJump = 6;
+        this.rad = 6;
         setTimeout(() => {
           if (this.pipes[i].x > this.getWidth() - 60) {
             this.speedPipes = 10;
-            this.fall = 14;
+            this.fall = 18;
+            this.timeJump = 2;
             this.speedJump = 7;
+            this.gap = 150;
           } else if (this.pipes[i].x > this.getWidth() - 100) {
             this.speedPipes = 4;
             this.fall = 7;
@@ -164,7 +168,7 @@ export default class Flappybird {
     this.pos = this.bY;
     this.fly = setInterval(() => {
       this.bY -= this.speedJump;
-    }, 6);
+    }, this.timeJump);
   }
   collision(x, y) {
     this.hookLeft = this.getWidth() / 2 + this.bird.height / 2;
@@ -174,7 +178,7 @@ export default class Flappybird {
       this.scores++;
     }
     if (x <= this.hookLeft && x >= this.hookRight) {
-      if ((this.bY + this.getHeight() / 2 <= y + this.sewerPipesNorth.height + this.bird.height / 2) 
+      if ((this.bY + this.getHeight() / 2 <= y + this.sewerPipesNorth.height + this.bird.height - 10)
       || (this.bY + this.getHeight() / 2 >= y + this.sewerPipesNorth.height - this.bird.height / 2 + this.gap)) {
         this.drawButton();
         this.start = false;
