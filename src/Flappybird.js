@@ -151,16 +151,19 @@ export default class Flappybird {
         this.timeJump = 6;
         this.rad = 6;
         setTimeout(() => {
+          // fps = 15
           if (this.pipes[i].x > this.getWidth() - 60) {
-            this.speedPipes = 10;
+            this.speedPipes = 7;
             this.fall = 18;
             this.timeJump = 2;
             this.speedJump = 7;
             this.gap = 150;
-          } else if (this.pipes[i].x > this.getWidth() - 100) {
+          } // fps = 30
+          else if (this.pipes[i].x > this.getWidth() - 100) {
             this.speedPipes = 4;
-            this.fall = 7;
-          } else if (this.pipes[i].x > this.getWidth() - 150) {
+            this.fall = 8;
+          } // fps = 60
+          else if (this.pipes[i].x > this.getWidth() - 150) {
             this.speedPipes = 2;
           }
         }, 1000);
