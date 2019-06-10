@@ -23,7 +23,7 @@ export default class Flappybird {
     this.bX = 0; // vt
     this.bY = 0; // vt
     this.jump = 55; // lực nhảy
-    this.speedJump = 6;
+    this.speedJump = 2.5;
     this.speedPipes = 2;
     this.fall = 3.5; // tốc độ rơi
     this.space = 200; // khoảng cách xuất hiện cột
@@ -95,6 +95,9 @@ export default class Flappybird {
       this.drawBird(this.bX, this.bY);
       this.bY += this.fall; // rơi
       // bắt đầu xoay
+      for (let index = 0; index < 100; index++) {
+        console.log("OK");
+      }
       this.angle += this.speedAngle;
       if (this.angle >= 0) {
         this.speedAngle = 6;
@@ -110,7 +113,7 @@ export default class Flappybird {
       }
       this.drawPipes();
       this.drawScro();
-      if(this.start != false) {
+      if (this.start != false) {
         this.request(run);
       }
     };
@@ -139,14 +142,14 @@ export default class Flappybird {
         this.check = true;
         setTimeout(() => {
           if (this.pipes[i].x > this.getWidth() - 60) {
-            this.speedPipes = 6;
+            this.speedPipes = 10;
             this.fall = 14;
+            this.speedJump = 7;
           } else if (this.pipes[i].x > this.getWidth() - 100) {
             this.speedPipes = 4;
             this.fall = 7;
           } else if (this.pipes[i].x > this.getWidth() - 150) {
             this.speedPipes = 2;
-            this.speedAngle = 6;
           }
         }, 1000);
       }
@@ -160,8 +163,8 @@ export default class Flappybird {
     this.angle = -30;
     this.pos = this.bY;
     this.fly = setInterval(() => {
-      this.bY -= 2.5;
-    }, this.speedJump);
+      this.bY -= this.speedJump;
+    }, 6);
   }
   collision(x, y) {
     this.hookLeft = this.getWidth() / 2 + this.bird.height / 2;
