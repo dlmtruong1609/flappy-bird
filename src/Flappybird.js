@@ -95,9 +95,9 @@ export default class Flappybird {
       this.drawBird(this.bX, this.bY);
       this.bY += this.fall; // rơi
       // bắt đầu xoay
-      for (let index = 0; index < 100; index++) {
-        console.log("OK");
-      }
+      // for (let index = 0; index < 100; index++) {
+      //   console.log("OK");
+      // }
       this.angle += this.speedAngle;
       if (this.angle >= 0) {
         this.speedAngle = 6;
