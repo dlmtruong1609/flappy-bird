@@ -1,4 +1,4 @@
-import MySprite from "./drawObj";
+// import MySprite from "./drawObj";
 
 export default class Flappybird {
   constructor(context, canvas) {
@@ -50,17 +50,17 @@ export default class Flappybird {
     return this.cvs.width;
   }
 
-  drawBird() {
-    this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
-    this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
+  drawBird(x, y) {
+    // this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
+    // this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
 
-    // this.ctxb = this.ctx;
-    // this.cvsb = this.cvs;
-    // this.ctxb.save();
-    // this.ctxb.translate(x + this.cvs.width / 2, y + this.cvs.height / 2);
-    // this.ctxb.rotate((this.angle * Math.PI) / 180);
-    // this.ctxb.drawImage(this.bird, -this.bird.width / 2, -this.bird.height / 2);
-    // this.ctxb.restore();
+    this.ctxb = this.ctx;
+    this.cvsb = this.cvs;
+    this.ctxb.save();
+    this.ctxb.translate(x + this.cvs.width / 2, y + this.cvs.height / 2);
+    this.ctxb.rotate((this.angle * Math.PI) / 180);
+    this.ctxb.drawImage(this.bird, -this.bird.width / 2, -this.bird.height / 2);
+    this.ctxb.restore();
   }
 
   drawBg() {
@@ -99,10 +99,18 @@ export default class Flappybird {
         console.log("OK");
       }
       this.angle += this.speedAngle;
-      if (this.angle >= 0) {
-        this.speedAngle = 6;
+      if (this.timeJump !== 2) {
+        if (this.angle >= 0) {
+          this.speedAngle = 6;
+        } else {
+          this.speedAngle = 1;
+        }
       } else {
-        this.speedAngle = 1;
+        if (this.angle >= 0) {
+          this.speedAngle = 10;
+        } else {
+          this.speedAngle = 5;
+        }
       }
       // giữ nguyên góc
       if (this.angle > 70) {
@@ -178,7 +186,7 @@ export default class Flappybird {
       this.scores++;
     }
     if (x <= this.hookLeft && x >= this.hookRight) {
-      if ((this.bY + this.getHeight() / 2 <= y + this.sewerPipesNorth.height + this.bird.height - 10)
+      if ((this.bY + this.getHeight() / 2 <= y + this.sewerPipesNorth.height + this.bird.width / 2)
       || (this.bY + this.getHeight() / 2 >= y + this.sewerPipesNorth.height - this.bird.height / 2 + this.gap)) {
         this.drawButton();
         this.start = false;
