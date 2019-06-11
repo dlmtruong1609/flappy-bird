@@ -119,6 +119,7 @@ export default class Flappybird {
       if (this.bY < this.posBird - this.jump) {
         clearInterval(this.fly);
       }
+      timeline = this.starttime - this.pointtime;
       this.drawPipes(timeline);
       this.drawScro();
       this.endtime = Date.now();
@@ -141,16 +142,14 @@ export default class Flappybird {
       this.flag++;
       if (this.flag == 3) {
         this.pos = Math.round(timeline / 10);
+        this.timeline = timeline;
         console.log(this.pos);
-      }
-      if (this.pos > 1 && this.pos < 4) {
-        this.speedJump = 6;
       }
       this.pipes[i].x -= this.pos;
       this.collision(this.pipes[i].x, this.pipes[i].y);
       // đánh dấu xuất hiện cột mới
-      if (this.pipes[i].x <= Math.floor(this.getWidth() - this.space - this.pos + this.pos / 2) &&
-        this.pipes[i].x >= Math.floor(this.getWidth() - this.space - this.pos - this.pos / 2)) {
+      if (this.pipes[i].x <= Math.floor(this.getWidth() - this.space + this.pos / 3) &&
+        this.pipes[i].x >= Math.floor(this.getWidth() - this.space - this.pos / 3)) {
         this.pipes.push({
           x: this.cvs.width,
           y: Math.random() * -200
@@ -166,8 +165,8 @@ export default class Flappybird {
     this.angle = -30;
     this.posBird = this.bY;
     this.fly = setInterval(() => {
-      this.bY -= this.pos + 0.5;
-    }, this.speedJump);
+      this.bY -= 1.5;
+    }, 1);
   }
   collision(x, y) {
     this.hookLeft = this.getWidth() / 2 + this.bird.height / 2;
