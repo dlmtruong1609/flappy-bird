@@ -103,9 +103,9 @@ export default class Flappybird {
       this.drawBird(this.bX, this.bY);
       this.bY += this.pos + 1.5; // rơi
       // bắt đầu xoay
-      // for (let index = 0; index < 100; index++) {
-      //   console.log("OK");
-      // }
+      for (let index = 0; index < 100; index++) {
+        console.log("OK");
+      }
       this.angle += this.speedAngle;
       if (this.angle >= 0) {
         this.speedAngle = 6;
@@ -119,7 +119,6 @@ export default class Flappybird {
       if (this.bY < this.posBird - this.jump) {
         clearInterval(this.fly);
       }
-      timeline = this.starttime - this.pointtime;
       this.drawPipes(timeline);
       this.drawScro();
       this.endtime = Date.now();
@@ -142,8 +141,10 @@ export default class Flappybird {
       this.flag++;
       if (this.flag == 3) {
         this.pos = Math.round(timeline / 10);
-        this.timeline = timeline;
         console.log(this.pos);
+      }
+      if (this.pos > 1 && this.pos < 4) {
+        this.speedJump = 6;
       }
       this.pipes[i].x -= this.pos;
       this.collision(this.pipes[i].x, this.pipes[i].y);
@@ -165,8 +166,8 @@ export default class Flappybird {
     this.angle = -30;
     this.posBird = this.bY;
     this.fly = setInterval(() => {
-      this.bY -= 1.5;
-    }, 1);
+      this.bY -= this.pos + (this.pos / 2) - 0.5;
+    }, this.speedJump);
   }
   collision(x, y) {
     this.hookLeft = this.getWidth() / 2 + this.bird.height / 2;
