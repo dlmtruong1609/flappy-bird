@@ -101,7 +101,7 @@ export default class Flappybird {
 
       this.drawBg();
       this.drawBird(this.bX, this.bY);
-      this.bY += this.pos + 1.5; // rơi
+      this.bY += this.pos + this.pos - 0.5; // rơi
       // bắt đầu xoay
       // for (let index = 0; index < 100; index++) {
       //   console.log("OK");
@@ -143,9 +143,6 @@ export default class Flappybird {
         this.pos = Math.round(timeline / 10);
         console.log(this.pos);
       }
-      if (this.pos > 1 && this.pos < 4) {
-        this.speedJump = 6;
-      }
       this.pipes[i].x -= this.pos;
       this.collision(this.pipes[i].x, this.pipes[i].y);
       // đánh dấu xuất hiện cột mới
@@ -165,9 +162,13 @@ export default class Flappybird {
     clearInterval(this.fly);
     this.angle = -30;
     this.posBird = this.bY;
+    this.incre = this.pos * 2;
+    if (this.pos > 1 && this.pos < 4) {
+      this.incre = 1.5;
+    }
     this.fly = setInterval(() => {
-      this.bY -= this.pos + (this.pos / 2) - 0.5;
-    }, this.speedJump);
+      this.bY -= this.incre;
+    }, 1);
   }
   collision(x, y) {
     this.hookLeft = this.getWidth() / 2 + this.bird.height / 2;
