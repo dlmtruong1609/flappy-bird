@@ -108,9 +108,9 @@ export default class Flappybird {
       // }
       this.angle += this.speedAngle;
       if (this.angle >= 0) {
-        this.speedAngle = 6;
+        this.speedAngle = 4;
       } else {
-        this.speedAngle = 1;
+        this.speedAngle = 0.5;
       }
       // giữ nguyên góc
       if (this.angle > 70) {
