@@ -24,12 +24,9 @@ export default class Flappybird {
     this.bX = 0; // vt
     this.bY = 0; // vt
     this.jump = 55; // lực nhảy
-    this.speedJump = 1;
-    this.speedPipes = 2;
     this.fall = 0; // tốc độ rơi
     this.space = 200; // khoảng cách xuất hiện cột
-    this.start = true;
-    this.check = false;
+    this.gameover = false; // check game over
     //mảng các cột
     this.pipes = [
       {
@@ -38,7 +35,7 @@ export default class Flappybird {
       }
     ];
     this.angle = 0; // góc
-    this.speedAngle = 0;
+    this.speedAngle = 0; // tốc độ quay
     this.startPipe = false;
     this.scores = 0;
     this.flag = 1;
@@ -124,7 +121,7 @@ export default class Flappybird {
       this.drawScro();
       this.endtime = Date.now();
       this.waittime = Math.max(this.defaultWaittime - (this.endtime - this.starttime), 0);
-      if (this.start == true) {
+      if (this.gameover != true) {
         setTimeout(run, this.waittime);
       }
     };
@@ -157,7 +154,7 @@ export default class Flappybird {
     }
   }
   bird_Fly() {
-    if (this.start === false) {
+    if (this.gameover != false) {
       location.reload();
     }
     clearInterval(this.fly);
@@ -182,16 +179,16 @@ export default class Flappybird {
       this.scores++;
     }
     if (x <= this.hookLeft && x >= this.hookRight) {
-      if ((this.bY + this.getHeight() / 2 <= y + this.sewerPipesNorth.height + this.bird.height / 2) 
+      if ((this.bY + this.getHeight() / 2 <= y + this.sewerPipesNorth.height + this.bird.height / 2)
       || (this.bY + this.getHeight() / 2 >= y + this.sewerPipesNorth.height - this.bird.height / 2 + this.gap)) {
         this.drawNotify();
-        this.start = false;
+        this.gameover = true;
       }
     }
     if (this.bY >= this.getHeight() / 2 - this.fg.height - 10) {
       this.drawNotify();
       this.fall = 0;
-      this.start = false;
+      this.gameover = true;
     }
   }
 }
