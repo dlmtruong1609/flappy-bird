@@ -1,4 +1,4 @@
-import MySprite from "./drawObj";
+// import MySprite from "./drawObj";
 
 export default class Flappybird {
   constructor(context, canvas) {
@@ -26,7 +26,7 @@ export default class Flappybird {
     this.jump = 55; // lực nhảy
     this.speedJump = 1;
     this.speedPipes = 2;
-    this.fall = 3.5; // tốc độ rơi
+    this.fall = 0; // tốc độ rơi
     this.space = 200; // khoảng cách xuất hiện cột
     this.start = true;
     this.check = false;
@@ -38,7 +38,8 @@ export default class Flappybird {
       }
     ];
     this.angle = 0; // góc
-    this.speedAngle = 1;
+    this.speedAngle = 0;
+    this.startPipe = false;
     this.scores = 0;
     this.flag = 1;
     this.pos = 0;
@@ -51,17 +52,17 @@ export default class Flappybird {
     return this.cvs.width;
   }
 
-  drawBird() {
-    this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
-    this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
+  drawBird(x, y) {
+    // this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
+    // this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
 
-    // this.ctxb = this.ctx;
-    // this.cvsb = this.cvs;
-    // this.ctxb.save();
-    // this.ctxb.translate(x + this.cvs.width / 2, y + this.cvs.height / 2);
-    // this.ctxb.rotate((this.angle * Math.PI) / 180);
-    // this.ctxb.drawImage(this.bird, -this.bird.width / 2, -this.bird.height / 2);
-    // this.ctxb.restore();
+    this.ctxb = this.ctx;
+    this.cvsb = this.cvs;
+    this.ctxb.save();
+    this.ctxb.translate(x + this.cvs.width / 2, y + this.cvs.height / 2);
+    this.ctxb.rotate((this.angle * Math.PI) / 180);
+    this.ctxb.drawImage(this.bird, -this.bird.width / 2, -this.bird.height / 2);
+    this.ctxb.restore();
   }
 
   drawBg() {
@@ -101,16 +102,16 @@ export default class Flappybird {
 
       this.drawBg();
       this.drawBird(this.bX, this.bY);
-      this.bY += this.pos + this.pos - 0.5; // rơi
+      this.bY += this.fall; // rơi
       // bắt đầu xoay
       // for (let index = 0; index < 100; index++) {
       //   console.log("OK");
       // }
       this.angle += this.speedAngle;
-      if (this.angle >= 0) {
+      if (this.angle > 0) {
         this.speedAngle = 4;
       } else {
-        this.speedAngle = 0.5;
+        this.speedAngle = this.speedAngle;
       }
       // giữ nguyên góc
       if (this.angle > 70) {
@@ -166,6 +167,9 @@ export default class Flappybird {
     if (this.pos > 1 && this.pos < 4) {
       this.incre = 1.5;
     }
+    this.startPipe = true;
+    this.fall = this.pos + this.pos - 0.5;
+    this.speedAngle = 1;
     this.fly = setInterval(() => {
       this.bY -= this.incre;
     }, 1);
