@@ -1,28 +1,24 @@
-// import MySprite from "./drawObj";
+import MySprite from "./objBird";
 
 export default class Flappybird {
   constructor(context, canvas) {
     this.ctx = context;
     this.cvs = canvas;
 
-    this.bird = new Image();
     this.bg = new Image();
     this.fg = new Image();
     this.sewerPipesNorth = new Image();
     this.sewerPipesSouth = new Image();
     // vẽ các đối tượng
-    this.bird.src = require("./assets/images/bird.png");
     this.bg.src = require("./assets/images/bg.png");
     this.fg.src = require("./assets/images/fg.png");
     this.sewerPipesNorth.src = require("./assets/images/sewerpipesNorth.png");
     this.sewerPipesSouth.src = require("./assets/images/sewerpipesSouth.png");
-
+    this.bird = new MySprite(this.ctx, this.cvs);
     // cài đặt thông số ở đây
     this.fps = 60;
     this.defaultWaittime = 1000 / this.fps;
     this.gap = 110; // khoảng cách giữa cột trên và dưới
-    this.bX = 0; // vt
-    this.bY = 0; // vt
     this.jump = 55; // lực nhảy
     this.fall = 0; // tốc độ rơi
     this.space = 200; // khoảng cách xuất hiện cột
@@ -34,8 +30,6 @@ export default class Flappybird {
         y: 0
       }
     ];
-    this.angle = 0; // góc
-    this.speedAngle = 0; // tốc độ quay
     this.startPipe = false;
     this.scores = 0;
     this.flag = 1;
@@ -49,17 +43,8 @@ export default class Flappybird {
     return this.cvs.width;
   }
 
-  drawBird(x, y) {
-    // this.run = new MySprite(this.bird.src, this.ctx, this.cvs);
-    // this.run.Do_Frame_Things(this.angle, this.bX, this.bY);
-
-    this.ctxb = this.ctx;
-    this.cvsb = this.cvs;
-    this.ctxb.save();
-    this.ctxb.translate(x + this.cvs.width / 2, y + this.cvs.height / 2);
-    this.ctxb.rotate((this.angle * Math.PI) / 180);
-    this.ctxb.drawImage(this.bird, -this.bird.width / 2, -this.bird.height / 2);
-    this.ctxb.restore();
+  drawBird() {
+    this.bird.Do_Frame_Things();
   }
 
   drawBg() {
@@ -98,25 +83,18 @@ export default class Flappybird {
       var timeline = this.starttime - this.pointtime;
 
       this.drawBg();
-      this.drawBird(this.bX, this.bY);
-      this.bY += this.fall; // rơi
+      this.drawBird();
+      this.bird.y += (this.pos * 2);
       // bắt đầu xoay
       // for (let index = 0; index < 100; index++) {
       //   console.log("OK");
       // }
-      this.angle += this.speedAngle;
-      if (this.angle > 0) {
-        this.speedAngle = 4;
-      } else {
-        this.speedAngle = this.speedAngle;
-      }
+      this.bird.angle += 4;
       // giữ nguyên góc
-      if (this.angle > 70) {
-        this.angle = 70;
+      if (this.bird.angle > 70) {
+        this.bird.angle = 70;
       }
-      if (this.bY < this.posBird - this.jump) {
-        clearInterval(this.fly);
-      }
+
       this.drawPipes(timeline);
       this.drawScro();
       this.endtime = Date.now();
@@ -139,7 +117,6 @@ export default class Flappybird {
       this.flag++;
       if (this.flag == 3) {
         this.pos = Math.round(timeline / 10);
-        console.log(this.pos);
       }
       this.pipes[i].x -= this.pos;
       this.collision(this.pipes[i].x, this.pipes[i].y);
@@ -157,37 +134,24 @@ export default class Flappybird {
     if (this.gameover != false) {
       location.reload();
     }
-    clearInterval(this.fly);
-    this.angle = -30;
-    this.posBird = this.bY;
-    this.incre = this.pos * 2;
-    if (this.pos > 1 && this.pos < 4) {
-      this.incre = 1.5;
-    }
-    this.startPipe = true;
-    this.fall = this.pos + this.pos - 0.5;
-    this.speedAngle = 1;
-    this.fly = setInterval(() => {
-      this.bY -= this.incre;
-    }, 1);
+    this.bird.moveTo(this.bird.y, 1000);
   }
   collision(x, y) {
-    this.hookLeft = this.getWidth() / 2 + this.bird.height / 2;
-    this.hookRight = this.hookLeft - this.sewerPipesNorth.width - this.bird.width / 2;
+    this.hookLeft = this.getWidth() / 2 + this.bird.MyImg.height / 2;
+    this.hookRight = this.hookLeft - this.sewerPipesNorth.width - this.bird.MyImg.width / 2;
 
     if (x == this.hookLeft - 1) {
       this.scores++;
     }
     if (x <= this.hookLeft && x >= this.hookRight) {
-      if ((this.bY + this.getHeight() / 2 <= y + this.sewerPipesNorth.height + this.bird.height / 2)
-      || (this.bY + this.getHeight() / 2 >= y + this.sewerPipesNorth.height - this.bird.height / 2 + this.gap)) {
+      if ((this.bird.y + this.getHeight() / 2 <= y + this.sewerPipesNorth.height + this.bird.MyImg.height / 2)
+      || (this.bird.y + this.getHeight() / 2 >= y + this.sewerPipesNorth.height - this.bird.MyImg.height / 2 + this.gap)) {
         this.drawNotify();
         this.gameover = true;
       }
     }
-    if (this.bY >= this.getHeight() / 2 - this.fg.height - 10) {
+    if (this.bird.y >= this.getHeight() / 2 - this.fg.height - 10) {
       this.drawNotify();
-      this.fall = 0;
       this.gameover = true;
     }
   }
