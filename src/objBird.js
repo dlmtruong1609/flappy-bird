@@ -8,8 +8,8 @@ export default class MySprite {
     this.incrY = 0;
     this.MyImg = new Image();
     this.MyImg.src = require("./assets/images/bird.png");
-    this.timeLine = 0;
     this.defaultTime = 1000 / 60;
+    this.flag = true;
   }
   Do_Frame_Things() {
     this.ctx.save();
@@ -20,15 +20,39 @@ export default class MySprite {
   }
   moveTo(cPos, time, pointtime) {
     let run = () => {
+      this.flag = false;
       this.angle = -20;
       if (!pointtime) {
         pointtime = Date.now();
       }
       var starttime = Date.now();
-      this.timeline = starttime - pointtime;
-      if (this.timeline / time > 0.3) return;
-      var per = this.timeline / 2000;
+      this.starttime = pointtime;
+      var timeline = starttime - pointtime;
+      var per = timeline / 2000;
       this.y = cPos - 500 * per;
+      if (timeline / time > 0.3) {
+        this.flag = true;
+        this.fall(this.y);
+        return;
+      }
+      var endtime = Date.now();
+      var waittime = Math.max(this.defaultTime - (endtime - starttime), 0);
+      setTimeout(run, waittime, pointtime);
+    };
+    run();
+  }
+  fall(cPos, pointtime) {
+    let run = () => {
+      this.angle = -20;
+      if (!pointtime) {
+        pointtime = Date.now();
+      }
+      var starttime = Date.now();
+      var timeline = starttime - pointtime;
+      if (this.flag == false) return;
+      var per = timeline / 2500;
+      this.angle = 100 * per;
+      this.y = cPos + 500 * per;
       var endtime = Date.now();
       var waittime = Math.max(this.defaultTime - (endtime - starttime), 0);
       setTimeout(run, waittime, pointtime);

@@ -18,9 +18,7 @@ export default class Flappybird {
     // cài đặt thông số ở đây
     this.fps = 60;
     this.defaultWaittime = 1000 / this.fps;
-    this.gap = 110; // khoảng cách giữa cột trên và dưới
-    this.jump = 55; // lực nhảy
-    this.fall = 0; // tốc độ rơi
+    this.gap = 130; // khoảng cách giữa cột trên và dưới
     this.space = 200; // khoảng cách xuất hiện cột
     this.gameover = false; // check game over
     //mảng các cột
@@ -30,7 +28,6 @@ export default class Flappybird {
         y: 0
       }
     ];
-    this.startPipe = false;
     this.scores = 0;
     this.flag = 1;
     this.pos = 0;
@@ -81,15 +78,12 @@ export default class Flappybird {
 
       this.starttime = Date.now();
       var timeline = this.starttime - this.pointtime;
-
       this.drawBg();
       this.drawBird();
-      this.bird.y += (this.pos * 2);
       // bắt đầu xoay
       // for (let index = 0; index < 100; index++) {
       //   console.log("OK");
       // }
-      this.bird.angle += 4;
       // giữ nguyên góc
       if (this.bird.angle > 70) {
         this.bird.angle = 70;
@@ -115,7 +109,7 @@ export default class Flappybird {
       this.drawSewerPipesSouth(this.pipes[i].x, this.pipes[i].y + this.sewerPipesNorth.height + this.gap);
       this.drawFg(this.pipes[i].x);
       this.flag++;
-      if (this.flag == 3) {
+      if (this.flag === 3) {
         this.pos = Math.round(timeline / 10);
       }
       this.pipes[i].x -= this.pos;
